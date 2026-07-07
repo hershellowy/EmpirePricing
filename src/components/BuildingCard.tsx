@@ -1,6 +1,5 @@
 import type { Building, FieldVisibility, StageLog } from '../lib/types'
-import { STAGE_STYLES } from '../lib/stageStyles'
-import { currentStageLog, formatDate, formatDuration } from '../utils/time'
+import { currentStageLog, formatDuration } from '../utils/time'
 
 interface BuildingCardProps {
   building: Building
@@ -13,7 +12,8 @@ interface BuildingCardProps {
 const currency = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
-  maximumFractionDigits: 0,
+  notation: 'compact',
+  maximumFractionDigits: 1,
 })
 
 export function BuildingCard({
@@ -25,66 +25,29 @@ export function BuildingCard({
 }: BuildingCardProps) {
   const show = (field: keyof FieldVisibility) => isAdmin || visibility[field]
   const current = currentStageLog(logs)
-  const style = STAGE_STYLES[building.stage]
+
+  const showSub = show('sub_price') && building.sub_price != null
+  const showCustomer = show('customer_price') && building.customer_price != null
+  const showTime = show('time_in_stage') && current != null
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-electric-300 hover:shadow-md"
+      className="flex w-full flex-col gap-1 rounded-lg border border-slate-200 bg-white p-2.5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-electric-300 hover:shadow-md"
     >
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="font-semibold text-navy-900">{building.name}</h3>
-        {show('stage') && (
-          <span
-            className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${style.badge}`}
-          >
-            {building.stage}
-          </span>
-        )}
-      </div>
+      <h3 className="text-sm leading-snug font-bold text-navy-900">{building.name}</h3>
 
-      <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-        {show('service_type') && (
-          <span className="rounded-md bg-slate-100 px-2 py-0.5 font-medium text-slate-600">
-            {building.service_type}
-          </span>
-        )}
-        {show('date_logged') && current && (
-          <span>Since {formatDate(current.entered_at)}</span>
-        )}
-        {show('time_in_stage') && current && (
-          <span className="font-medium text-electric-600">
-            {formatDuration(Date.now() - new Date(current.entered_at).getTime())} in stage
-          </span>
-        )}
-      </div>
-
-      {(show('sub_price') || show('customer_price')) && (
-        <div className="flex gap-4 border-t border-slate-100 pt-3 text-sm">
-          {show('sub_price') && (
-            <div>
-              <p className="text-xs text-slate-400">Sub Price</p>
-              <p className="font-semibold text-navy-800">
-                {building.sub_price != null ? currency.format(building.sub_price) : '—'}
-              </p>
-            </div>
-          )}
-          {show('customer_price') && (
-            <div>
-              <p className="text-xs text-slate-400">Customer Price</p>
-              <p className="font-semibold text-navy-800">
-                {building.customer_price != null
-                  ? currency.format(building.customer_price)
-                  : '—'}
-              </p>
-            </div>
+      {(showSub || showCustomer || showTime) && (
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] font-medium text-slate-400">
+          {showSub && <span>S {currency.format(building.sub_price!)}</span>}
+          {showCustomer && <span>C {currency.format(building.customer_price!)}</span>}
+          {showTime && current && (
+            <span className="text-electric-500">
+              {formatDuration(Date.now() - new Date(current.entered_at).getTime())}
+            </span>
           )}
         </div>
-      )}
-
-      {show('notes') && building.notes && (
-        <p className="line-clamp-2 text-xs text-slate-500">{building.notes}</p>
       )}
     </button>
   )
