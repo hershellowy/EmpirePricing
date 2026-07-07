@@ -6,7 +6,7 @@ export function StageSection({
   stage,
   count,
   children,
-  defaultOpen = true,
+  defaultOpen = false,
 }: {
   stage: Stage
   count: number

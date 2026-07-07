@@ -22,10 +22,13 @@ Realtime), deployed on Vercel.
 ## 1. Create the Supabase project
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. In the SQL Editor, run the migration in
-   [`supabase/migrations/0001_init.sql`](./supabase/migrations/0001_init.sql).
-   This creates the `buildings`, `stage_logs`, `user_roles`, and `settings`
-   tables, the auto-stamping trigger, and RLS policies.
+2. In the SQL Editor, run the migrations in `supabase/migrations/` in order:
+   - [`0001_init.sql`](./supabase/migrations/0001_init.sql) creates the
+     `buildings`, `stage_logs`, `user_roles`, and `settings` tables, the
+     auto-stamping trigger, and RLS policies.
+   - [`0002_rename_won_to_closed.sql`](./supabase/migrations/0002_rename_won_to_closed.sql)
+     renames the `Won` stage to `Closed`. If you're setting up a brand new
+     project, run both in order anyway — it's a no-op either way.
 3. Under **Authentication → Sign In / Providers**, enable the **Google**
    provider and fill in the OAuth Client ID/Secret (see step 2 below).
 4. Under **Authentication → URL Configuration**, add your local dev URL
