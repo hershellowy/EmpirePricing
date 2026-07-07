@@ -149,8 +149,11 @@ begin
 end;
 $$;
 
+-- Must run AFTER insert: the trigger body inserts a child stage_logs row
+-- referencing the new building's id, which only satisfies stage_logs' FK
+-- constraint once the buildings row itself has been written.
 create trigger on_building_insert
-  before insert on public.buildings
+  after insert on public.buildings
   for each row execute function public.handle_building_stage_change();
 
 create trigger on_building_stage_update

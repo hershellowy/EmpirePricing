@@ -52,10 +52,12 @@ export function BuildingModal({
   const [form, setForm] = useState<NewBuildingInput>(emptyForm)
   const [saving, setSaving] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!open) return
     setConfirmDelete(false)
+    setError(null)
     if (building) {
       setForm({
         name: building.name,
@@ -78,6 +80,7 @@ export function BuildingModal({
 
   const handleSave = async () => {
     setSaving(true)
+    setError(null)
     try {
       if (building) {
         await onUpdate(building.id, {
@@ -91,6 +94,8 @@ export function BuildingModal({
         })
       }
       onClose()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save building.')
     } finally {
       setSaving(false)
     }
@@ -99,9 +104,12 @@ export function BuildingModal({
   const handleDelete = async () => {
     if (!building) return
     setSaving(true)
+    setError(null)
     try {
       await onDelete(building.id)
       onClose()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete building.')
     } finally {
       setSaving(false)
     }
@@ -295,6 +303,12 @@ export function BuildingModal({
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {error && (
+            <div className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+              {error}
             </div>
           )}
         </div>
