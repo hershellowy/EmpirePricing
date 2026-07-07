@@ -21,17 +21,17 @@ export function StageSection({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-white ${style.header}`}
+        className={`flex w-full items-center justify-between gap-3 border-l-4 bg-white px-4 py-3 text-left transition hover:bg-slate-50 ${style.accent} ${open ? 'border-b border-b-slate-100' : ''}`}
       >
         <div className="flex items-center gap-2.5">
           <span className={`h-2 w-2 rounded-full ${style.dot}`} />
-          <span className="font-semibold tracking-tight">{stage}</span>
-          <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold">
+          <span className={`font-semibold tracking-tight ${style.text}`}>{stage}</span>
+          <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${style.badge}`}>
             {count}
           </span>
         </div>
         <svg
-          className={`h-4 w-4 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`h-4 w-4 shrink-0 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

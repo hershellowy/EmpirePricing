@@ -20,9 +20,11 @@
   --color-electric-300: #7cbcff;
   --color-electric-100: #d9ebff;
 
+  --color-gold-700: #8a6d1a;
   --color-gold-600: #b3921f;
   --color-gold-500: #d4af37;
   --color-gold-400: #e6c65c;
+  --color-gold-100: #f8ecc7;
 }
 
 :root {
