@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth'
 import { useBuildings } from '../hooks/useBuildings'
 import { useSettings } from '../hooks/useSettings'
 import { STAGES, type Building } from '../lib/types'
-import { StageSection } from '../components/StageSection'
+import { KanbanColumn } from '../components/KanbanColumn'
 import { BuildingCard } from '../components/BuildingCard'
 import { BuildingModal } from '../components/BuildingModal'
 
@@ -92,9 +92,9 @@ export function Dashboard() {
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="flex h-[calc(100vh-13rem)] gap-4 overflow-x-auto pb-2">
         {STAGES.map((stage) => (
-          <StageSection key={stage} stage={stage} count={byStage[stage]?.length ?? 0}>
+          <KanbanColumn key={stage} stage={stage} count={byStage[stage]?.length ?? 0}>
             {byStage[stage]?.map((b) => (
               <BuildingCard
                 key={b.id}
@@ -105,7 +105,7 @@ export function Dashboard() {
                 onClick={() => openBuilding(b)}
               />
             ))}
-          </StageSection>
+          </KanbanColumn>
         ))}
       </div>
 
