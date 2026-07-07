@@ -3,9 +3,9 @@ export const STAGES = [
   'Pending Pricing',
   'Pending Proposal',
   'Submitted',
-  'Won',
-  'Lost',
+  'Closed',
   'Executed',
+  'Lost',
 ] as const
 
 export type Stage = (typeof STAGES)[number]
