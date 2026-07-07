@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { useBuildings } from '../hooks/useBuildings'
 import { useSettings } from '../hooks/useSettings'
+import { useStageCollapse } from '../hooks/useStageCollapse'
 import { STAGES, type Building } from '../lib/types'
 import { KanbanColumn } from '../components/KanbanColumn'
 import { BuildingCard } from '../components/BuildingCard'
@@ -19,6 +20,7 @@ export function Dashboard() {
     deleteBuilding,
   } = useBuildings()
   const { visibility } = useSettings()
+  const { isCollapsed, toggle } = useStageCollapse()
 
   const [search, setSearch] = useState('')
   const [modalOpen, setModalOpen] = useState(false)
@@ -93,20 +95,29 @@ export function Dashboard() {
       </div>
 
       <div className="flex h-[calc(100vh-13rem)] gap-4 overflow-x-auto pb-2">
-        {STAGES.map((stage) => (
-          <KanbanColumn key={stage} stage={stage} count={byStage[stage]?.length ?? 0}>
-            {byStage[stage]?.map((b) => (
-              <BuildingCard
-                key={b.id}
-                building={b}
-                logs={stageLogs[b.id] ?? []}
-                isAdmin={isAdmin}
-                visibility={visibility}
-                onClick={() => openBuilding(b)}
-              />
-            ))}
-          </KanbanColumn>
-        ))}
+        {STAGES.map((stage) => {
+          const count = byStage[stage]?.length ?? 0
+          return (
+            <KanbanColumn
+              key={stage}
+              stage={stage}
+              count={count}
+              collapsed={isCollapsed(stage, count)}
+              onToggle={() => toggle(stage, count)}
+            >
+              {byStage[stage]?.map((b) => (
+                <BuildingCard
+                  key={b.id}
+                  building={b}
+                  logs={stageLogs[b.id] ?? []}
+                  isAdmin={isAdmin}
+                  visibility={visibility}
+                  onClick={() => openBuilding(b)}
+                />
+              ))}
+            </KanbanColumn>
+          )
+        })}
       </div>
 
       <BuildingModal
