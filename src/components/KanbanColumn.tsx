@@ -22,7 +22,7 @@ export function KanbanColumn({
       <button
         type="button"
         onClick={onToggle}
-        className={`flex h-full w-20 shrink-0 flex-col items-center gap-2 overflow-hidden rounded-xl border border-t-4 border-slate-200 bg-slate-50 px-1 py-3 shadow-sm transition hover:bg-slate-100 ${style.topAccent}`}
+        className={`flex h-full w-[72px] shrink-0 flex-col items-center gap-2 overflow-hidden rounded-xl border border-t-4 border-slate-200 bg-slate-50 px-1 py-3 shadow-sm transition hover:bg-slate-100 ${style.topAccent}`}
       >
         <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${style.badge}`}>
           {count}
